@@ -3,9 +3,15 @@ package game;
 import camera.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import object.*;
 
@@ -20,10 +26,17 @@ public class Main extends Application {
     private Group mainSceneRoot;
 
     private SubScene mainSubscene;
+    private SubScene headUpDisplayScene;
 
     private Spacecraft spacecraft;
+    private LaunchPad launchPad;
     private List<SpaceObject> bubbles = new ArrayList<>();
+    private Text coordinates;
+    private Text bubblesHitText;
     private int bubblesHit;
+
+    private Circle dot;
+    private Polygon arrow;
 
     private UpdateTimer timer = new UpdateTimer();
 
@@ -31,7 +44,9 @@ public class Main extends Application {
     private BackCamera backCamera = new BackCamera();
     private OrbitingCamera orbitingCamera = new OrbitingCamera();
     private AbstractCamera camera;
-    
+
+    private double mouseXLeft;
+    private double mouseYLeft;
     private double mouseXRight;
     private double mouseYRight;
 
@@ -43,9 +58,28 @@ public class Main extends Application {
                 previous = now;
             float passed = (now - previous) / 1e9f;
             spacecraft.update(passed);
+            refreshHeadUp();
             camera.update();
             checkForCollisions();
             previous = now;
+        }
+    }
+
+    private void refreshHeadUp() {
+        String stringBuilder = "x - " + String.format("%.0f", this.spacecraft.getPosition().getX()) + "\n" +
+                "y - " + String.format("%.0f", this.spacecraft.getPosition().getY()) + "\n" +
+                "z - " + String.format("%.0f", this.spacecraft.getPosition().getZ()) + "\n";
+        this.coordinates.setText(stringBuilder);
+        this.bubblesHitText.setText(this.bubblesHit + "");
+        this.arrow.setRotate(-this.spacecraft.getHorizontalAngle());
+        double offsetX = this.spacecraft.getPosition().getX() / 3000.0D;
+        double offsetY = this.spacecraft.getPosition().getY() / 3000.0D;
+        this.dot.setTranslateX(150.0D + offsetX);
+        this.dot.setTranslateY(116.0D - offsetY);
+        if (offsetX <= 75.0D && offsetY <= 75.0D) {
+            this.dot.setVisible(true);
+        } else {
+            this.dot.setVisible(false);
         }
     }
 
@@ -80,12 +114,70 @@ public class Main extends Application {
         }
     }
 
+    private void createHeadUpDisplayScene() {
+        Group headUpDisplayRoot = new Group();
+        this.headUpDisplayScene = new SubScene(headUpDisplayRoot, 300.0D, 233.0D, true, SceneAntialiasing.BALANCED);
+        this.headUpDisplayScene.setTranslateX(600.0D);
+        this.headUpDisplayScene.setTranslateY(467.0D);
+        this.headUpDisplayScene.setVisible(true);
+        Rectangle rec = new Rectangle(300.0D, 233.0D);
+        rec.setFill(Color.LIGHTGREEN);
+        rec.setArcHeight(46.0D);
+        rec.setArcWidth(60.0D);
+        rec.setOpacity(0.2D);
+        headUpDisplayRoot.getChildren().add(rec);
+        Font font = new Font("Verdana", 10.0D);
+        this.coordinates = new Text();
+        this.coordinates.setText(this.coordinates.getText() + this.spacecraft.getPosition().getX() + "\n");
+        this.coordinates.setText(this.coordinates.getText() + this.spacecraft.getPosition().getY() + "\n");
+        this.coordinates.setText(this.coordinates.getText() + this.spacecraft.getPosition().getZ() + "\n");
+        this.coordinates.setFill(Color.RED);
+        this.coordinates.setFont(font);
+        this.coordinates.setTranslateX(10.0D);
+        this.coordinates.setTranslateY(187.0D);
+        this.bubblesHitText = new Text();
+        this.bubblesHitText.setText(this.bubblesHit + "");
+        this.bubblesHitText.setFill(Color.RED);
+        this.bubblesHitText.setFont(font);
+        this.bubblesHitText.setTranslateX(300.0D - this.bubblesHitText.getLayoutX() - 20.0D);
+        this.bubblesHitText.setTranslateY(187.0D);
+        headUpDisplayRoot.getChildren().addAll(this.coordinates, this.bubblesHitText);
+
+        for(int i = 0; i < 3; ++i) {
+            Circle c = new Circle((double)(i * 300 / 8));
+            c.setTranslateX(150.0D);
+            c.setTranslateY(116.0D);
+            c.setFill(null);
+            c.setStroke(Color.WHITE);
+            c.setStrokeWidth(2.0D);
+            headUpDisplayRoot.getChildren().add(c);
+        }
+
+        this.dot = new Circle(5.0D);
+        this.dot.setTranslateX(150.0D);
+        this.dot.setTranslateY(116.0D);
+        this.dot.setFill(Color.RED);
+        headUpDisplayRoot.getChildren().add(this.dot);
+        Circle compassCircle = new Circle(33.0D);
+        compassCircle.setFill(null);
+        compassCircle.setStroke(Color.RED);
+        compassCircle.setStrokeWidth(3.0D);
+        compassCircle.setTranslateY(compassCircle.getRadius() + compassCircle.getRadius() / 6.0D);
+        compassCircle.setTranslateX(300.0D - compassCircle.getRadius() - compassCircle.getRadius() / 6.0D);
+        headUpDisplayRoot.getChildren().add(compassCircle);
+        this.arrow = new Polygon(0.0D, -33.0D, -3.0D, 33.0D, 3.0D, 33.0D);
+        this.arrow.setTranslateY(compassCircle.getRadius() + compassCircle.getRadius() / 6.0D);
+        this.arrow.setTranslateX(300.0D - compassCircle.getRadius() - compassCircle.getRadius() / 6.0D);
+        this.arrow.setFill(Color.WHITE);
+        headUpDisplayRoot.getChildren().add(this.arrow);
+    }
+
     private void createMainScene() {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
         spacecraft = new Rocket2(); // TODO: Choose rocket
-        LaunchPad launchPad = new LaunchPad();
+        launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
         instantiateCameras();
@@ -102,7 +194,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Group root = new Group();
         createMainScene();
-        root.getChildren().addAll(mainSubscene);
+        createHeadUpDisplayScene();
+        root.getChildren().addAll(mainSubscene, headUpDisplayScene);
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, true);
         scene.setOnKeyPressed(this::onKeyPressed);
@@ -171,6 +264,25 @@ public class Main extends Application {
                     backCamera.updateVerticalPosition(-20);
                 }
                 break;
+            case L:
+                PointLight[] lights = this.launchPad.getPointLights();
+                if (this.mainSceneRoot.getChildren().contains(lights[0])) {
+                    this.mainSceneRoot.getChildren().removeAll(lights);
+                } else {
+                    this.mainSceneRoot.getChildren().addAll(lights);
+                }
+
+                this.launchPad.switchLights();
+                break;
+            case H:
+                if (this.headUpDisplayScene.isVisible()) {
+                    this.headUpDisplayScene.setVisible(false);
+                } else {
+                    this.headUpDisplayScene.setVisible(true);
+                }
+                break;
+            case Q: case ESCAPE:
+                Platform.exit();
         }
     }
 
