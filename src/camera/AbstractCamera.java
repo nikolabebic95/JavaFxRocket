@@ -1,7 +1,6 @@
 package camera;
 
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.transform.Rotate;
 
 public abstract class AbstractCamera {
     protected PerspectiveCamera camera;

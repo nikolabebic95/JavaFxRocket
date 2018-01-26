@@ -106,15 +106,7 @@ public class Rocket extends Spacecraft {
             points[index + 8] = - height / 2;
         }
 
-        for (int i = 0; i < numberOfTriangles; i++) {
-            int index = i * 6;
-            faces[index] = i * 3;
-            faces[index + 1] = 0;
-            faces[index + 2] = i * 3 + 1;
-            faces[index + 3] = 1;
-            faces[index + 4] = i * 3 + 2;
-            faces[index + 5] = 2;
-        }
+        populateFaces(numberOfTriangles, faces);
 
         TriangleMesh mesh = new TriangleMesh();
         mesh.getPoints().addAll(points);
@@ -135,6 +127,18 @@ public class Rocket extends Spacecraft {
         cone.getChildren().addAll(meshView, circle);
 
         return cone;
+    }
+
+    private static void populateFaces(int numberOfTriangles, int[] faces) {
+        for (int i = 0; i < numberOfTriangles; i++) {
+            int index = i * 6;
+            faces[index] = i * 3;
+            faces[index + 1] = 0;
+            faces[index + 2] = i * 3 + 1;
+            faces[index + 3] = 1;
+            faces[index + 4] = i * 3 + 2;
+            faces[index + 5] = 2;
+        }
     }
 
     private Group makeWing(PhongMaterial material) {
@@ -196,15 +200,7 @@ public class Rocket extends Spacecraft {
             points[index2 + 17] = 5;
         }
 
-        for (int i = 0; i < numberOfTriangles * 2; i++) {
-            int index = i * 6;
-            faces[index] = i * 3;
-            faces[index + 1] = 0;
-            faces[index + 2] = i * 3 + 1;
-            faces[index + 3] = 1;
-            faces[index + 4] = i * 3 + 2;
-            faces[index + 5] = 2;
-        }
+        populateFaces(numberOfTriangles, faces);
 
         TriangleMesh mesh = new TriangleMesh();
         mesh.getPoints().addAll(points);
@@ -250,15 +246,7 @@ public class Rocket extends Spacecraft {
             points[index + 8] = z2;
         }
 
-        for (int i = 0; i < numberOfTriangles; i++) {
-            int index = i * 6;
-            faces[index] = i * 3;
-            faces[index + 1] = 0;
-            faces[index + 2] = i * 3 + 1;
-            faces[index + 3] = 1;
-            faces[index + 4] = i * 3 + 2;
-            faces[index + 5] = 2;
-        }
+        populateFaces(numberOfTriangles, faces);
 
         TriangleMesh mesh = new TriangleMesh();
         mesh.getPoints().addAll(points);

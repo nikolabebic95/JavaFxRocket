@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import object.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javafx.scene.input.MouseEvent;
 
@@ -18,17 +17,14 @@ public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
     private static final int WINDOW_WIDTH = 900;
 
-    private Group root;
     private Group mainSceneRoot;
 
-    private Scene scene;
     private SubScene mainSubscene;
 
     private Spacecraft spacecraft;
-    private LaunchPad launchPad;
     private List<SpaceObject> bubbles = new ArrayList<>();
     private int bubblesHit;
-    
+
     private UpdateTimer timer = new UpdateTimer();
 
     private DefaultCamera defaultCamera = new DefaultCamera();
@@ -52,10 +48,8 @@ public class Main extends Application {
         }
     }
 
-       private void checkForCollisions() {
-        Iterator<SpaceObject> iterator = bubbles.iterator();
-        while (iterator.hasNext()) {
-            SpaceObject spaceObject = iterator.next();
+    private void checkForCollisions() {
+        for (SpaceObject spaceObject : bubbles) {
             if (spaceObject.getBoundsInParent().intersects(spacecraft.getBoundsInParent())) {
                 positionObject(spaceObject);
                 bubblesHit++;
@@ -90,7 +84,7 @@ public class Main extends Application {
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
         spacecraft = new Rocket();
-        launchPad = new LaunchPad();
+        LaunchPad launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
         instantiateCameras();
@@ -103,16 +97,16 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        root = new Group();
+    public void start(Stage primaryStage) {
+        Group root = new Group();
         createMainScene();
         root.getChildren().addAll(mainSubscene);
 
-        scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, true);
-        scene.setOnKeyPressed(e -> onKeyPressed(e));
-        scene.setOnKeyReleased(e -> onKeyReleased(e));
-        scene.setOnMousePressed(e -> onMousePressed(e));
-        scene.setOnMouseDragged(e -> onMouseDragged(e));
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, true);
+        scene.setOnKeyPressed(this::onKeyPressed);
+        scene.setOnKeyReleased(this::onKeyReleased);
+        scene.setOnMousePressed(this::onMousePressed);
+        scene.setOnMouseDragged(this::onMouseDragged);
         primaryStage.setTitle("Rocket");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

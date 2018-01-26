@@ -14,7 +14,5 @@ public class SpaceBubble extends SpaceObject {
         sphere.setMaterial(material);
 
         this.getChildren().addAll(sphere);
-
     }
-
 }
