@@ -4,13 +4,11 @@ import geometry.Vector;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 

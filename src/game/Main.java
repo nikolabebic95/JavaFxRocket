@@ -176,7 +176,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new Rocket2(); // TODO: Choose rocket
+        spacecraft = new StarDestroyer(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
@@ -241,6 +241,7 @@ public class Main extends Application {
             case DIGIT3:
                 camera = orbitingCamera;
                 mainSubscene.setCamera(camera.getCamera());
+                break;
             case SPACE:
                 spacecraft.spacePressed();
                 break;
