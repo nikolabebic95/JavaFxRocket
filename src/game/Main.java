@@ -29,6 +29,7 @@ public class Main extends Application {
 
     private DefaultCamera defaultCamera = new DefaultCamera();
     private BackCamera backCamera = new BackCamera();
+    private OrbitingCamera orbitingCamera = new OrbitingCamera();
     private AbstractCamera camera;
     
     private double mouseXRight;
@@ -83,7 +84,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new Rocket();
+        spacecraft = new Rocket2(); // TODO: Choose rocket
         LaunchPad launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
@@ -94,6 +95,7 @@ public class Main extends Application {
     private void instantiateCameras() {
         camera = defaultCamera;
         backCamera.setObject(spacecraft);
+        orbitingCamera.setObject(spacecraft);
     }
 
     @Override
@@ -143,6 +145,9 @@ public class Main extends Application {
                 camera = backCamera;
                 mainSubscene.setCamera(camera.getCamera());
                 break;
+            case DIGIT3:
+                camera = orbitingCamera;
+                mainSubscene.setCamera(camera.getCamera());
             case SPACE:
                 spacecraft.spacePressed();
                 break;
@@ -208,8 +213,6 @@ public class Main extends Application {
         mouseXRight = e.getSceneX();
         mouseYRight = e.getSceneY();
     }
-
-
 
     public static void main(String[] args) {
         launch(args);
