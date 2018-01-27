@@ -18,6 +18,7 @@ import object.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.MouseEvent;
+import object.starwars.StarDestroyer;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
@@ -45,8 +46,6 @@ public class Main extends Application {
     private OrbitingCamera orbitingCamera = new OrbitingCamera();
     private AbstractCamera camera;
 
-    private double mouseXLeft;
-    private double mouseYLeft;
     private double mouseXRight;
     private double mouseYRight;
 
@@ -178,7 +177,7 @@ public class Main extends Application {
         mainSubscene.setFill(Color.BLACK);
         spacecraft = new StarDestroyer(); // TODO: Choose rocket
         launchPad = new LaunchPad();
-        mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
+        mainSceneRoot.getChildren().addAll(launchPad, spacecraft, new BackgroundSpace());
         setUpSpaceObjects();
         instantiateCameras();
         mainSubscene.setCamera(camera.getCamera());

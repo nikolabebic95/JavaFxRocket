@@ -13,7 +13,7 @@ public class AdvancedRocket extends Spacecraft {
         position = new Vector(0, 0, 0);
         state = new IdleState(this);
         TdsModelImporter tdsModelImporter = new TdsModelImporter();
-        tdsModelImporter.read("models/spacecraft.3ds");
+        tdsModelImporter.read("models/spacecraft/spacecraft.3ds");
         Node[] tdsMesh = tdsModelImporter.getImport();
         tdsModelImporter.close();
 
