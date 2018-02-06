@@ -18,7 +18,9 @@ import object.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.MouseEvent;
+import object.starwars.MilleniumFalcon;
 import object.starwars.StarDestroyer;
+import object.starwars.TieInterceptor;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
@@ -175,7 +177,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new StarDestroyer(); // TODO: Choose rocket
+        spacecraft = new TieInterceptor(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft, new BackgroundSpace());
         setUpSpaceObjects();
