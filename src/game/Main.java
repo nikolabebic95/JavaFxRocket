@@ -19,9 +19,7 @@ import object.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.MouseEvent;
-import object.starwars.MilleniumFalcon;
-import object.starwars.StarDestroyer;
-import object.starwars.TieInterceptor;
+import object.starwars.*;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
@@ -123,7 +121,9 @@ public class Main extends Application {
     }
 
     private void drawBubble() {
-        SpaceBubble bubble = new SpaceBubble(450, Color.LIGHTGREEN);
+        //SpaceBubble bubble = new SpaceBubble(450, Color.LIGHTGREEN);
+        StormtrooperHelmet bubble = new StormtrooperHelmet();
+        //Heart bubble = new Heart();
         positionObject(bubble);
         bubbles.add(bubble);
         mainSceneRoot.getChildren().add(bubble);
@@ -248,7 +248,7 @@ public class Main extends Application {
         mainSubscene.setFill(Color.BLACK);
         spacecraft = new StarDestroyer(); // TODO: Choose rocket
         launchPad = new LaunchPad();
-        mainSceneRoot.getChildren().addAll(launchPad, spacecraft, new BackgroundSpace());
+        mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
         instantiateCameras();
         mainSubscene.setCamera(camera.getCamera());
