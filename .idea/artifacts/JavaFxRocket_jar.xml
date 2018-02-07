@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="JavaFxRocket:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaFxRocket_jar</output-path>
+    <root id="archive" name="JavaFxRocket.jar">
+      <element id="module-output" name="JavaFxRocket" />
+      <element id="library" level="project" name="Raketa" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jim3dsModelImporterJFX.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jimFxmlModelImporterJFX.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jimObjModelImporterJFX.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jimStlMeshImporterJFX.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jimX3dModelImporterJFX.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Lab 3 demo - Raketa" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jimColModelImporterJFX.jar" path-in-jar="/" />
+      <element id="library" level="project" name="jim3dsModelImporterJFX" />
+    </root>
+  </artifact>
+</component>

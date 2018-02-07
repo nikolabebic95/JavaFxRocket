@@ -13,6 +13,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import object.*;
 
@@ -41,6 +42,7 @@ public class Main extends Application {
     private Circle dot;
     private Polygon arrow;
 
+    private Line centralLine;
     private ArrayList<Line> leftLines = new ArrayList<>();
     private ArrayList<Line> rightLines = new ArrayList<>();
     private ArrayList<Text> texts = new ArrayList<>();
@@ -94,6 +96,9 @@ public class Main extends Application {
         double start = 2 + ((int)spacecraft.getPosition().getZ() % mod) * 57.5 / mod;
 
         int startZ = (int)spacecraft.getPosition().getZ() / mod * mod + 1000;
+
+        double angle = spacecraft.getRollAngle();
+        centralLine.getTransforms().setAll(new Rotate(angle, 150, 117, 0));
 
         for (int i = 0; i < 5; i++) {
             Line line = leftLines.get(i);
@@ -214,9 +219,10 @@ public class Main extends Application {
         rectangle.setArcWidth(60.0D);
         rectangle.setOpacity(0.2D);
 
-        Line line = new Line(0, 117, 300, 117);
+        Line line = new Line(-50, 117, 350, 117);
         line.setStroke(Color.RED);
         line.setStrokeWidth(3);
+        centralLine = line;
 
         root.getChildren().addAll(rectangle, line);
 

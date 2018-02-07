@@ -79,4 +79,7 @@ public abstract class Spacecraft extends SpaceObject {
         return minSpeed;
     }
 
+    public double getRollAngle() {
+        return state.getRollAngle();
+    }
 }

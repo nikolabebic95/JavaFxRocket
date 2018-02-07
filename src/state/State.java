@@ -11,4 +11,8 @@ public abstract class State {
 
     public void update(double passed, int pitchDirection, int rollDirection, int accelerationDirection){}
     public void spacePressed(){}
+
+    public double getRollAngle() {
+        return 0;
+    }
 }

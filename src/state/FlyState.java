@@ -49,6 +49,11 @@ public class FlyState extends State {
         spacecraft.getTransforms().addAll(new Rotate(spacecraft.getHorizontalAngle() - yawAngle, Rotate.Z_AXIS), new Rotate(pitchAngle, Rotate.X_AXIS), new Rotate(rollAngle, Rotate.Y_AXIS));
     }
 
+    @Override
+    public double getRollAngle() {
+        return rollAngle;
+    }
+
     private void updateSpeed(double passed, int acceleration) {
         if (acceleration == 0) return;
         double delta = speed * Math.exp(-(speed / maxSpeed - 1)) * passed;
