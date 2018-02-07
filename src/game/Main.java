@@ -8,6 +8,7 @@ import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -30,6 +31,7 @@ public class Main extends Application {
 
     private SubScene mainSubscene;
     private SubScene headUpDisplayScene;
+    private SubScene altitudeHeadUp;
 
     private Spacecraft spacecraft;
     private LaunchPad launchPad;
@@ -40,6 +42,10 @@ public class Main extends Application {
 
     private Circle dot;
     private Polygon arrow;
+
+    private ArrayList<Line> leftLines = new ArrayList<>();
+    private ArrayList<Line> rightLines = new ArrayList<>();
+    private ArrayList<Text> texts = new ArrayList<>();
 
     private UpdateTimer timer = new UpdateTimer();
 
@@ -60,6 +66,7 @@ public class Main extends Application {
             float passed = (now - previous) / 1e9f;
             spacecraft.update(passed);
             refreshHeadUp();
+            refreshAltitudeHeadUp();
             camera.update();
             checkForCollisions();
             previous = now;
@@ -81,6 +88,28 @@ public class Main extends Application {
             this.dot.setVisible(true);
         } else {
             this.dot.setVisible(false);
+        }
+    }
+
+    private void refreshAltitudeHeadUp() {
+        int mod = 500;
+        double start = 2 + ((int)spacecraft.getPosition().getZ() % mod) * 57.5 / mod;
+
+        int startZ = (int)spacecraft.getPosition().getZ() / mod * mod + 1000;
+
+        for (int i = 0; i < 5; i++) {
+            Line line = leftLines.get(i);
+            double yCoord = start + i * 57.5;
+            line.setStartY(yCoord);
+            line.setEndY(yCoord);
+            line = rightLines.get(i);
+            line.setStartY(yCoord);
+            line.setEndY(yCoord);
+            Text text = texts.get(i);
+            int z = startZ - i * mod;
+            text.setText(z + "");
+            text.setTranslateX(150 - text.getLayoutBounds().getWidth() / 2.0);
+            text.setTranslateY(yCoord + text.getLayoutBounds().getHeight() / 4.0);
         }
     }
 
@@ -173,11 +202,51 @@ public class Main extends Application {
         headUpDisplayRoot.getChildren().add(this.arrow);
     }
 
+    private void createAltitudeHeadUp() {
+        Group root = new Group();
+        altitudeHeadUp = new SubScene(root, 300, 233, true, SceneAntialiasing.BALANCED);
+        altitudeHeadUp.setTranslateY(467);
+        altitudeHeadUp.setVisible(true);
+
+        Rectangle rectangle = new Rectangle(300, 233);
+        rectangle.setFill(Color.LIGHTGREEN);
+        rectangle.setArcHeight(46.0D);
+        rectangle.setArcWidth(60.0D);
+        rectangle.setOpacity(0.2D);
+
+        Line line = new Line(0, 117, 300, 117);
+        line.setStroke(Color.RED);
+        line.setStrokeWidth(3);
+
+        root.getChildren().addAll(rectangle, line);
+
+        for (int i = 0; i < 5; i++) {
+            double yCoord = 2 + i * 57.5;
+            Line left = new Line(50, yCoord, 100, yCoord);
+            Line right = new Line(200, yCoord, 250, yCoord);
+
+            int height = 1000 - i * 500;
+
+            Text text = new Text(height + "");
+            text.setFont(Font.font("Verdana", 10));
+            text.setStroke(Color.WHITE);
+            text.setTranslateX(150 - text.getLayoutBounds().getWidth() / 2.0);
+            text.setTranslateY(yCoord + text.getLayoutBounds().getHeight() / 4.0);
+            left.setStroke(Color.WHITE);
+            right.setStroke(Color.WHITE);
+            root.getChildren().addAll(left, right);
+            root.getChildren().add(text);
+            leftLines.add(left);
+            rightLines.add(right);
+            texts.add(text);
+        }
+    }
+
     private void createMainScene() {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new TieInterceptor(); // TODO: Choose rocket
+        spacecraft = new StarDestroyer(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft, new BackgroundSpace());
         setUpSpaceObjects();
@@ -196,7 +265,8 @@ public class Main extends Application {
         Group root = new Group();
         createMainScene();
         createHeadUpDisplayScene();
-        root.getChildren().addAll(mainSubscene, headUpDisplayScene);
+        createAltitudeHeadUp();
+        root.getChildren().addAll(mainSubscene, headUpDisplayScene, altitudeHeadUp);
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, true);
         scene.setOnKeyPressed(this::onKeyPressed);
@@ -279,8 +349,10 @@ public class Main extends Application {
             case H:
                 if (this.headUpDisplayScene.isVisible()) {
                     this.headUpDisplayScene.setVisible(false);
+                    altitudeHeadUp.setVisible(false);
                 } else {
                     this.headUpDisplayScene.setVisible(true);
+                    altitudeHeadUp.setVisible(true);
                 }
                 break;
             case Q: case ESCAPE:
