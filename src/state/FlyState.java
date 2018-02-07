@@ -42,7 +42,13 @@ public class FlyState extends State {
 
         double horizontalSpeed = Math.cos(Math.toRadians(pitchAngle)) * speed;
         double verticalSpeed = Math.sin(Math.toRadians(pitchAngle)) * speed;
-        spacecraft.getPosition().add(Math.cos(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed * passed, Math.sin(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed * passed, verticalSpeed * passed);
+
+        double speedX = Math.cos(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed * passed;
+        double speedY = Math.sin(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed * passed;
+        double speedZ = verticalSpeed * passed;
+
+        spacecraft.getSpeed().set(speedX, speedY, speedZ);
+        spacecraft.getPosition().add(speedX, speedY, speedZ);
         spacecraft.setHorizontalAngle(spacecraft.getHorizontalAngle() - yawAngle * rotationFactor * passed * (speed > 0 ? horizontalSpeed / speed : 1));
 
         spacecraft.getTransforms().setAll(new Translate(spacecraft.getPosition().getX(), spacecraft.getPosition().getY(), spacecraft.getPosition().getZ()));

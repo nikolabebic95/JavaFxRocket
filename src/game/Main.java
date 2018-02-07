@@ -14,11 +14,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import object.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.input.MouseEvent;
 import object.starwars.*;
 
@@ -31,13 +31,16 @@ public class Main extends Application {
     private SubScene mainSubscene;
     private SubScene headUpDisplayScene;
     private SubScene altitudeHeadUp;
+    private SubScene healthHeadUp;
 
     private Spacecraft spacecraft;
     private LaunchPad launchPad;
-    private List<SpaceObject> bubbles = new ArrayList<>();
+    private ArrayList<ShootableObject> shootables = new ArrayList<>();
     private Text coordinates;
     private Text bubblesHitText;
     private int bubblesHit;
+
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
 
     private Circle dot;
     private Polygon arrow;
@@ -46,6 +49,8 @@ public class Main extends Application {
     private ArrayList<Line> leftLines = new ArrayList<>();
     private ArrayList<Line> rightLines = new ArrayList<>();
     private ArrayList<Text> texts = new ArrayList<>();
+
+    private ArrayList<Heart> health = new ArrayList<>();
 
     private UpdateTimer timer = new UpdateTimer();
 
@@ -64,6 +69,7 @@ public class Main extends Application {
             if (previous == 0)
                 previous = now;
             float passed = (now - previous) / 1e9f;
+            updateProjectiles(passed);
             spacecraft.update(passed);
             refreshHeadUp();
             refreshAltitudeHeadUp();
@@ -116,21 +122,67 @@ public class Main extends Application {
         }
     }
 
-    private void checkForCollisions() {
-        for (SpaceObject spaceObject : bubbles) {
-            if (spaceObject.getBoundsInParent().intersects(spacecraft.getBoundsInParent())) {
-                positionObject(spaceObject);
-                bubblesHit++;
-            }
+    private void refreshHealthHeadUp() {
+        int i;
+        for (i = 0; i < spacecraft.getHealth(); i++) {
+            health.get(i).setVisible(true);
+        }
+
+        for (; i < health.size(); i++) {
+            health.get(i).setVisible(false);
         }
     }
 
+    private void checkForCollisions() {
+        shootables.forEach(shootableObject -> {
+            projectiles.forEach(projectile -> {
+                if (shootableObject.getBoundsInParent().intersects(projectile.getBoundsInParent())) {
+                    shootableObject.shoot(projectile.getStrength());
+                    if (shootableObject.isKilled()) {
+                        shootableObject.reset();
+                        positionObject(shootableObject);
+                        bubblesHit++;
+                    }
+
+                    projectile.setKilled();
+                }
+            });
+
+            if (shootableObject.getBoundsInParent().intersects(spacecraft.getBoundsInParent())) {
+                shootableObject.kill();
+                shootableObject.reset();
+                positionObject(shootableObject);
+                bubblesHit++;
+                spacecraft.collide();
+                refreshHealthHeadUp();
+            }
+        });
+
+        projectiles.forEach(projectile -> {
+            if (projectile.isKilled()) {
+                mainSceneRoot.getChildren().remove(projectile);
+            }
+        });
+
+        projectiles.removeIf(Projectile::isKilled);
+    }
+
+    private void updateProjectiles(double passed) {
+        projectiles.forEach(projectile -> projectile.update(passed));
+        projectiles.forEach(projectile -> {
+            if (projectile.isOutside()) {
+                mainSceneRoot.getChildren().remove(projectile);
+            }
+        });
+        projectiles.removeIf(Projectile::isOutside);
+    }
+
     private void drawBubble() {
-        //SpaceBubble bubble = new SpaceBubble(450, Color.LIGHTGREEN);
-        StormtrooperHelmet bubble = new StormtrooperHelmet();
+        SpaceBubble bubble = new SpaceBubble(450);
+        //StormtrooperHelmet bubble = new StormtrooperHelmet();
         //Heart bubble = new Heart();
         positionObject(bubble);
-        bubbles.add(bubble);
+        shootables.add(bubble);
         mainSceneRoot.getChildren().add(bubble);
     }
 
@@ -248,6 +300,32 @@ public class Main extends Application {
         }
     }
 
+    private void createHealthHeadUp() {
+        Group root = new Group();
+        healthHeadUp = new SubScene(root, WINDOW_WIDTH, 100, true, SceneAntialiasing.BALANCED);
+
+        Rectangle rectangle = new Rectangle(WINDOW_WIDTH, 100);
+        rectangle.setFill(Color.LIGHTGREEN);
+        rectangle.setArcHeight(46.0D);
+        rectangle.setArcWidth(60.0D);
+        rectangle.setOpacity(0.2D);
+
+        root.getChildren().addAll(rectangle);
+
+        for (int i = 0; i < spacecraft.getHealth(); i++) {
+            Heart heart = new Heart();
+            heart.stopTimeline();
+            double scale = 0.02;
+            heart.setScaleX(scale);
+            heart.setScaleY(scale);
+            heart.setScaleZ(scale);
+            heart.getTransforms().add(new Translate(2500 + i * 5000, 2500, -2500));
+            heart.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
+            health.add(heart);
+            root.getChildren().add(heart);
+        }
+    }
+
     private void createMainScene() {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
@@ -272,7 +350,8 @@ public class Main extends Application {
         createMainScene();
         createHeadUpDisplayScene();
         createAltitudeHeadUp();
-        root.getChildren().addAll(mainSubscene, headUpDisplayScene, altitudeHeadUp);
+        createHealthHeadUp();
+        root.getChildren().addAll(mainSubscene, headUpDisplayScene, altitudeHeadUp, healthHeadUp);
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, true);
         scene.setOnKeyPressed(this::onKeyPressed);
@@ -360,6 +439,11 @@ public class Main extends Application {
                     this.headUpDisplayScene.setVisible(true);
                     altitudeHeadUp.setVisible(true);
                 }
+                break;
+            case B:
+                Projectile projectile = spacecraft.shoot();
+                mainSceneRoot.getChildren().add(projectile);
+                projectiles.add(projectile);
                 break;
             case Q: case ESCAPE:
                 Platform.exit();

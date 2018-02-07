@@ -1,5 +1,6 @@
 package object;
 
+import geometry.Vector;
 import state.State;
 
 public abstract class Spacecraft extends SpaceObject {
@@ -16,6 +17,18 @@ public abstract class Spacecraft extends SpaceObject {
     protected int accelerationDirection;
 
     protected State state;
+
+    protected int health;
+
+    protected int getMaxHealth() {
+        return 9;
+    }
+
+    private Vector speed = new Vector(0, 0, 0);
+
+    public Spacecraft() {
+        health = getMaxHealth();
+    }
 
     public abstract void update(double passed);
 
@@ -81,5 +94,21 @@ public abstract class Spacecraft extends SpaceObject {
 
     public double getRollAngle() {
         return state.getRollAngle();
+    }
+
+    public Vector getSpeed() {
+        return speed;
+    }
+
+    public Projectile shoot() {
+        return new BasicProjectile(this);
+    }
+
+    public void collide() {
+        health--;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

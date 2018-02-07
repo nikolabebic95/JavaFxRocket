@@ -13,6 +13,10 @@ public class Vector {
         z = _z;
     }
 
+    public Vector(Vector other) {
+        this(other.x, other.y, other.z);
+    }
+
     public Vector duplicate() {
         return new Vector(x, y, z);
     }
@@ -29,6 +33,10 @@ public class Vector {
         y += dy;
         z += dz;
         return this;
+    }
+
+    public double getIntensity() {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
     public Vector add(Vector v) {

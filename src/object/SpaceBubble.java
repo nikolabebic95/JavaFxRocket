@@ -12,12 +12,28 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
-public class SpaceBubble extends SpaceObject {
-    public SpaceBubble(double radius, Color diffuseColor) {
+public class SpaceBubble extends ShootableObject {
+    private PhongMaterial material;
+
+    @Override
+    public void shoot(double dHealth) {
+        super.shoot(dHealth);
+        double red = (getMaxHealth() - health) / getMaxHealth();
+        double green = health / getMaxHealth();
+        material.setDiffuseColor(new Color(red, green, 0, 1));
+    }
+
+    @Override
+    public void reset() {
+        material.setDiffuseColor(new Color(0, 1, 0, 1));
+    }
+
+    public SpaceBubble(double radius) {
+        super();
         this.position = new Vector(0.0D, 0.0D, 0.0D);
         Image image = new Image("resources/bump.jpg");
-        PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(diffuseColor);
+        material = new PhongMaterial();
+        material.setDiffuseColor(new Color(0, 1, 0, 1));
         material.setBumpMap(image);
         Sphere sphere = new Sphere(radius);
         sphere.setMaterial(material);
