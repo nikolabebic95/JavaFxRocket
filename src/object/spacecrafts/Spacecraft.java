@@ -28,6 +28,7 @@ public abstract class Spacecraft extends SpaceObject {
     }
 
     private Vector speed = new Vector(0, 0, 0);
+    private Vector angle = new Vector(0, 0, 0);
 
     public Spacecraft() {
         health = getMaxHealth();
@@ -101,6 +102,10 @@ public abstract class Spacecraft extends SpaceObject {
 
     public Vector getSpeed() {
         return speed;
+    }
+
+    public Vector getAngle() {
+        return angle;
     }
 
     public Projectile shoot() {

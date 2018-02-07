@@ -5,6 +5,8 @@ import geometry.Vector;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
+import object.projectiles.Projectile;
+import object.projectiles.StarDestroyerProjectile;
 import object.spacecrafts.Spacecraft;
 import state.IdleState;
 
@@ -27,7 +29,13 @@ public class StarDestroyer extends Spacecraft {
         getChildren().add(group);
     }
 
+    @Override
     public void update(double passed) {
         this.state.update(passed, this.pitchDirection, this.rollDirection, this.accelerationDirection);
+    }
+
+    @Override
+    public Projectile shoot() {
+        return new StarDestroyerProjectile(this);
     }
 }

@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
+import object.projectiles.Projectile;
+import object.projectiles.TieInterceptorProjectile;
 import object.spacecrafts.Spacecraft;
 import state.IdleState;
 
@@ -26,6 +28,11 @@ public class TieInterceptor extends Spacecraft {
         group.getTransforms().add(new Scale(25, 25, 25));
 
         getChildren().add(group);
+    }
+
+    @Override
+    public Projectile shoot() {
+        return new TieInterceptorProjectile(this);
     }
 
     @Override

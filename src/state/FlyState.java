@@ -43,13 +43,16 @@ public class FlyState extends State {
         double horizontalSpeed = Math.cos(Math.toRadians(pitchAngle)) * speed;
         double verticalSpeed = Math.sin(Math.toRadians(pitchAngle)) * speed;
 
-        double speedX = Math.cos(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed * passed;
-        double speedY = Math.sin(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed * passed;
-        double speedZ = verticalSpeed * passed;
+        double speedX = Math.cos(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed;
+        double speedY = Math.sin(Math.toRadians(spacecraft.getHorizontalAngle() + 90)) * horizontalSpeed;
 
-        spacecraft.getSpeed().set(speedX, speedY, speedZ);
-        spacecraft.getPosition().add(speedX, speedY, speedZ);
+        spacecraft.getSpeed().set(speedX, speedY, verticalSpeed);
+        spacecraft.getPosition().add(speedX * passed, speedY * passed, verticalSpeed * passed);
         spacecraft.setHorizontalAngle(spacecraft.getHorizontalAngle() - yawAngle * rotationFactor * passed * (speed > 0 ? horizontalSpeed / speed : 1));
+
+        double angleZ = spacecraft.getHorizontalAngle() - yawAngle;
+
+        spacecraft.getAngle().set(pitchAngle, rollAngle, angleZ);
 
         spacecraft.getTransforms().setAll(new Translate(spacecraft.getPosition().getX(), spacecraft.getPosition().getY(), spacecraft.getPosition().getZ()));
         spacecraft.getTransforms().addAll(new Rotate(spacecraft.getHorizontalAngle() - yawAngle, Rotate.Z_AXIS), new Rotate(pitchAngle, Rotate.X_AXIS), new Rotate(rollAngle, Rotate.Y_AXIS));

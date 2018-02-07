@@ -25,6 +25,7 @@ import object.shootables.ShootableObject;
 import object.shootables.SpaceBubble;
 import object.spacecrafts.Spacecraft;
 import object.spacecrafts.StarDestroyer;
+import object.spacecrafts.TieInterceptor;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
@@ -334,7 +335,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new StarDestroyer(); // TODO: Choose rocket
+        spacecraft = new TieInterceptor(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();

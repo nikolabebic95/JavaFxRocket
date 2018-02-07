@@ -26,6 +26,7 @@ public class SpaceBubble extends ShootableObject {
 
     @Override
     public void reset() {
+        super.reset();
         material.setDiffuseColor(new Color(0, 1, 0, 1));
     }
 

@@ -8,12 +8,13 @@ public abstract class Projectile extends SpaceObject {
     private Vector speed;
     private boolean killed = false;
 
-    protected double factor = 1000;
-    protected double strength = 10;
+    protected double getFactor() {
+        return 20;
+    }
 
     public Projectile(Spacecraft spacecraft) {
         position = spacecraft.getPosition().duplicate();
-        speed = spacecraft.getSpeed().duplicate().scalarMultiply(factor);
+        speed = spacecraft.getSpeed().duplicate().scalarMultiply(getFactor());
         setTranslateX(position.getX());
         setTranslateY(position.getY());
         setTranslateZ(position.getZ());
@@ -42,6 +43,6 @@ public abstract class Projectile extends SpaceObject {
     }
 
     public double getStrength() {
-        return strength;
+        return 10;
     }
 }
