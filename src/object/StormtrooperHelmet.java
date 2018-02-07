@@ -1,4 +1,4 @@
-package object.starwars;
+package object;
 
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 import geometry.Vector;
@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import object.SpaceObject;
 import util.RandomUtility;
 
 import java.util.Random;

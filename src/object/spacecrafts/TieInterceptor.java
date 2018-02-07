@@ -1,4 +1,4 @@
-package object.starwars;
+package object.spacecrafts;
 
 import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import geometry.Vector;
@@ -7,23 +7,23 @@ import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
-import object.Spacecraft;
+import object.spacecrafts.Spacecraft;
 import state.IdleState;
 
-public class MilleniumFalcon extends Spacecraft {
-    public MilleniumFalcon() {
+public class TieInterceptor extends Spacecraft {
+    public TieInterceptor() {
         position = new Vector(0, 0, 0);
         state = new IdleState(this);
         TdsModelImporter modelImporter = new TdsModelImporter();
-        modelImporter.read("models/millennium falcon/millenium-falcon.3DS");
+        modelImporter.read("models/tie interceptor/tie-intercept.3DS");
         Node[] mesh = modelImporter.getImport();
         modelImporter.close();
 
         Group group = new Group(mesh);
 
-        group.getTransforms().add(new Rotate(-90, Rotate.X_AXIS));
-        group.getTransforms().add(new Scale(0.65, 0.65, 0.65));
-        group.getTransforms().add(new Translate(85, 0, -2550));
+        group.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
+        group.getTransforms().add(new Translate(1200, 0, 2500));
+        group.getTransforms().add(new Scale(25, 25, 25));
 
         getChildren().add(group);
     }

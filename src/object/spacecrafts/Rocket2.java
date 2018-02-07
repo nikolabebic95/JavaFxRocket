@@ -1,4 +1,4 @@
-package object;
+package object.spacecrafts;
 
 import geometry.Vector;
 import javafx.scene.paint.Color;
@@ -9,6 +9,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import object.spacecrafts.Spacecraft;
 import state.IdleState;
 
 public class Rocket2 extends Spacecraft {

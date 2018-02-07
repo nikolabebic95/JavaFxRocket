@@ -1,4 +1,6 @@
-package object;
+package object.shootables;
+
+import object.SpaceObject;
 
 public abstract class ShootableObject extends SpaceObject {
     protected double health;

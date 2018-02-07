@@ -1,7 +1,7 @@
 package state;
 
 import javafx.scene.transform.Rotate;
-import object.Spacecraft;
+import object.spacecrafts.Spacecraft;
 
 public class IdleState extends State{
 

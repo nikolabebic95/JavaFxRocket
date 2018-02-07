@@ -1,6 +1,6 @@
 package state;
 
-import object.Spacecraft;
+import object.spacecrafts.Spacecraft;
 
 public abstract class State {
     protected Spacecraft spacecraft;

@@ -1,6 +1,9 @@
-package object;
+package object.spacecrafts;
 
 import geometry.Vector;
+import object.SpaceObject;
+import object.projectiles.BasicProjectile;
+import object.projectiles.Projectile;
 import state.State;
 
 public abstract class Spacecraft extends SpaceObject {

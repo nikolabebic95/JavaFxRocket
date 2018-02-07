@@ -1,11 +1,12 @@
-package object;
+package object.projectiles;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
+import object.spacecrafts.Spacecraft;
 
-class BasicProjectile extends Projectile {
-    BasicProjectile(Spacecraft spacecraft) {
+public class BasicProjectile extends Projectile {
+    public BasicProjectile(Spacecraft spacecraft) {
         super(spacecraft);
 
         Sphere sphere = new Sphere(100);

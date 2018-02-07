@@ -1,4 +1,4 @@
-package object;
+package object.shootables;
 
 import geometry.Vector;
 import javafx.animation.KeyFrame;
@@ -11,6 +11,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+import object.shootables.ShootableObject;
 
 public class SpaceBubble extends ShootableObject {
     private PhongMaterial material;

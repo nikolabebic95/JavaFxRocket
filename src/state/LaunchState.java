@@ -2,7 +2,7 @@ package state;
 
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import object.Spacecraft;
+import object.spacecrafts.Spacecraft;
 
 public class LaunchState extends State {
     private double liftOffSpeed = 500;

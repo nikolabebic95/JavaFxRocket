@@ -20,7 +20,11 @@ import object.*;
 
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
-import object.starwars.*;
+import object.projectiles.Projectile;
+import object.shootables.ShootableObject;
+import object.shootables.SpaceBubble;
+import object.spacecrafts.Spacecraft;
+import object.spacecrafts.StarDestroyer;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;

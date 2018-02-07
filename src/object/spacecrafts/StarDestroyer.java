@@ -1,11 +1,11 @@
-package object.starwars;
+package object.spacecrafts;
 
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 import geometry.Vector;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
-import object.Spacecraft;
+import object.spacecrafts.Spacecraft;
 import state.IdleState;
 
 public class StarDestroyer extends Spacecraft {

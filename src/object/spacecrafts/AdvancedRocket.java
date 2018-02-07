@@ -1,10 +1,11 @@
-package object;
+package object.spacecrafts;
 
 import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import geometry.Vector;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
+import object.spacecrafts.Spacecraft;
 import state.IdleState;
 
 public class AdvancedRocket extends Spacecraft {

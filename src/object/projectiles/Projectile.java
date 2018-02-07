@@ -1,6 +1,8 @@
-package object;
+package object.projectiles;
 
 import geometry.Vector;
+import object.SpaceObject;
+import object.spacecrafts.Spacecraft;
 
 public abstract class Projectile extends SpaceObject {
     private Vector speed;
@@ -9,7 +11,7 @@ public abstract class Projectile extends SpaceObject {
     protected double factor = 1000;
     protected double strength = 10;
 
-    Projectile(Spacecraft spacecraft) {
+    public Projectile(Spacecraft spacecraft) {
         position = spacecraft.getPosition().duplicate();
         speed = spacecraft.getSpeed().duplicate().scalarMultiply(factor);
         setTranslateX(position.getX());
