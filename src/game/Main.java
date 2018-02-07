@@ -435,9 +435,11 @@ public class Main extends Application {
                 if (this.headUpDisplayScene.isVisible()) {
                     this.headUpDisplayScene.setVisible(false);
                     altitudeHeadUp.setVisible(false);
+                    healthHeadUp.setVisible(false);
                 } else {
                     this.headUpDisplayScene.setVisible(true);
                     altitudeHeadUp.setVisible(true);
+                    healthHeadUp.setVisible(true);
                 }
                 break;
             case B:
