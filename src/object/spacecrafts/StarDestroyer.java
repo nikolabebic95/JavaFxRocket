@@ -27,6 +27,19 @@ public class StarDestroyer extends Spacecraft {
         group.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
 
         getChildren().add(group);
+
+        /*
+        protected double maxRollAngle = 30;
+        protected double maxPitchAngle = 30;
+        protected double rollSpeed = 60;
+        protected double pitchSpeed = 60;
+        protected double rotationFactor = 4;
+        protected double maxSpeed = 3000;
+        protected double minSpeed = 200;
+         */
+
+        rollSpeed = 25;
+        pitchSpeed = 25;
     }
 
     @Override

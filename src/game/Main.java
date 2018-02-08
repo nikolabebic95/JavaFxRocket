@@ -23,9 +23,11 @@ import javafx.scene.input.MouseEvent;
 import object.projectiles.Projectile;
 import object.shootables.ShootableObject;
 import object.shootables.SpaceBubble;
+import object.spacecrafts.MilleniumFalcon;
 import object.spacecrafts.Spacecraft;
 import object.spacecrafts.StarDestroyer;
 import object.spacecrafts.TieInterceptor;
+import state.FlyState;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
@@ -335,7 +337,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new TieInterceptor(); // TODO: Choose rocket
+        spacecraft = new MilleniumFalcon(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
@@ -448,9 +450,11 @@ public class Main extends Application {
                 }
                 break;
             case B:
-                Projectile projectile = spacecraft.shoot();
-                mainSceneRoot.getChildren().add(projectile);
-                projectiles.add(projectile);
+                if (spacecraft.getState() instanceof FlyState) {
+                    Projectile projectile = spacecraft.shoot();
+                    mainSceneRoot.getChildren().add(projectile);
+                    projectiles.add(projectile);
+                }
                 break;
             case Q: case ESCAPE:
                 Platform.exit();

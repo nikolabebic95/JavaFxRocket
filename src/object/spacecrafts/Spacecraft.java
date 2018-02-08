@@ -119,4 +119,8 @@ public abstract class Spacecraft extends SpaceObject {
     public int getHealth() {
         return health;
     }
+
+    public State getState() {
+        return state;
+    }
 }

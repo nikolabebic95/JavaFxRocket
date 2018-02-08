@@ -11,7 +11,7 @@ public class StarDestroyerProjectile extends Projectile {
 
         Sphere sphere = new Sphere(50);
         PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(Color.LIGHTGREEN);
+        material.setDiffuseColor(Color.LIGHTCYAN);
         sphere.setMaterial(material);
         getChildren().add(sphere);
     }

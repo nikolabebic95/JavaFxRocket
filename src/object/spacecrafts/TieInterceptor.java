@@ -28,6 +28,22 @@ public class TieInterceptor extends Spacecraft {
         group.getTransforms().add(new Scale(25, 25, 25));
 
         getChildren().add(group);
+
+        /*
+        protected double maxRollAngle = 30;
+        protected double maxPitchAngle = 30;
+        protected double rollSpeed = 60;
+        protected double pitchSpeed = 60;
+        protected double rotationFactor = 4;
+        protected double maxSpeed = 3000;
+        protected double minSpeed = 200;
+         */
+
+        maxSpeed = 4000;
+        maxRollAngle = 60;
+        maxPitchAngle = 45;
+        rollSpeed = 100;
+        pitchSpeed = 100;
     }
 
     @Override
