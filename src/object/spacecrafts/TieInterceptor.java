@@ -24,7 +24,7 @@ public class TieInterceptor extends Spacecraft {
         Group group = new Group(mesh);
 
         group.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
-        group.getTransforms().add(new Translate(1200, 0, 2500));
+        group.getTransforms().add(new Translate(1202, 0, 2500));
         group.getTransforms().add(new Scale(25, 25, 25));
 
         getChildren().add(group);

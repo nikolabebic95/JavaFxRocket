@@ -43,7 +43,7 @@ public class MilleniumFalconProjectile extends Projectile {
 
     @Override
     protected double getFactor() {
-        return 30;
+        return 25;
     }
 
     @Override

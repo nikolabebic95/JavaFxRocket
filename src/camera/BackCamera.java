@@ -17,10 +17,13 @@ public class BackCamera extends AbstractCamera {
     }
 
     public void update() {
+        final double offsetY = 200;
+        final double offsetZ = 100;
+
         this.camera.getTransforms().setAll(new Translate(this.object.getPosition().getX(), this.object.getPosition().getY(), this.object.getPosition().getZ()));
         this.camera.getTransforms().addAll(new Rotate(-90.0D, Rotate.X_AXIS));
         this.camera.getTransforms().addAll(new Rotate(-this.object.getHorizontalAngle(), Rotate.Y_AXIS));
-        this.camera.getTransforms().addAll(new Translate(0.0D, (double)(-this.verticalPosition), (double)this.horizontalPosition));
+        this.camera.getTransforms().addAll(new Translate(0.0D, (double)(-this.verticalPosition) - offsetY, (double)this.horizontalPosition - offsetZ));
     }
 
     public void updateHorizontalPosition(int delta) {

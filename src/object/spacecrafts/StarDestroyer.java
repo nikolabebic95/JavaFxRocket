@@ -5,6 +5,7 @@ import geometry.Vector;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import object.projectiles.Projectile;
 import object.projectiles.StarDestroyerProjectile;
 import object.spacecrafts.Spacecraft;
@@ -25,6 +26,8 @@ public class StarDestroyer extends Spacecraft {
         group.getTransforms().add(new Rotate(180, Rotate.X_AXIS));
         group.getTransforms().add(new Rotate(-90, Rotate.Z_AXIS));
         group.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
+
+        group.getTransforms().add(new Translate(0, 0, 12));
 
         getChildren().add(group);
 

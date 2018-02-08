@@ -20,14 +20,10 @@ import object.*;
 
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
-import object.projectiles.Projectile;
-import object.shootables.ShootableObject;
-import object.shootables.SpaceBubble;
-import object.spacecrafts.MilleniumFalcon;
-import object.spacecrafts.Spacecraft;
-import object.spacecrafts.StarDestroyer;
-import object.spacecrafts.TieInterceptor;
-import state.FlyState;
+import object.projectiles.*;
+import object.shootables.*;
+import object.spacecrafts.*;
+import state.*;
 
 public class Main extends Application {
     private static final int WINDOW_HEIGHT = 700;
@@ -337,7 +333,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new MilleniumFalcon(); // TODO: Choose rocket
+        spacecraft = new StarDestroyer(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
