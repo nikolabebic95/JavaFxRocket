@@ -1,4 +1,4 @@
-package object;
+package object.powerups;
 
 import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import geometry.Vector;
@@ -9,12 +9,12 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import object.SpaceObject;
+import object.spacecrafts.Spacecraft;
 import util.RandomUtility;
 
 import java.util.Random;
 
-public class Heart extends SpaceObject {
+public class Heart extends PowerUp {
     private Timeline timeline;
 
     public Heart() {
@@ -57,5 +57,15 @@ public class Heart extends SpaceObject {
 
     public void stopTimeline() {
         timeline.stop();
+    }
+
+    @Override
+    public PowerUp copy() {
+        return new Heart();
+    }
+
+    @Override
+    public void apply(Spacecraft spacecraft) {
+        spacecraft.increaseHealth();
     }
 }

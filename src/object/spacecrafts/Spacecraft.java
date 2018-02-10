@@ -123,4 +123,10 @@ public abstract class Spacecraft extends SpaceObject {
     public State getState() {
         return state;
     }
+
+    public void increaseHealth() {
+        if (health != getMaxHealth()) {
+            health++;
+        }
+    }
 }

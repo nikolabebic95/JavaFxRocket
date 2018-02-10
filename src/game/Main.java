@@ -20,6 +20,9 @@ import object.*;
 
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
+import object.powerups.Heart;
+import object.powerups.PowerUp;
+import object.powerups.PowerUpsMap;
 import object.projectiles.*;
 import object.shootables.*;
 import object.spacecrafts.*;
@@ -44,6 +47,8 @@ public class Main extends Application {
     private int bubblesHit;
 
     private ArrayList<Projectile> projectiles = new ArrayList<>();
+
+    private ArrayList<PowerUp> powerUps = new ArrayList<>();
 
     private Circle dot;
     private Polygon arrow;
@@ -168,6 +173,20 @@ public class Main extends Application {
         });
 
         projectiles.removeIf(Projectile::isKilled);
+
+        powerUps.forEach(powerUp -> {
+            if (powerUp.getBoundsInParent().intersects(spacecraft.getBoundsInParent())) {
+                powerUp.apply(spacecraft);
+                powerUp.kill();
+                Platform.runLater(() -> {
+                    mainSceneRoot.getChildren().remove(powerUp);
+                    drawPowerUp();
+                });
+                refreshHealthHeadUp();
+            }
+        });
+
+        powerUps.removeIf(PowerUp::isKilled);
     }
 
     private void updateProjectiles(double passed) {
@@ -189,6 +208,13 @@ public class Main extends Application {
         mainSceneRoot.getChildren().add(bubble);
     }
 
+    private void drawPowerUp() {
+        PowerUp powerUp = PowerUpsMap.getRandom();
+        positionObject(powerUp);
+        powerUps.add(powerUp);
+        mainSceneRoot.getChildren().add(powerUp);
+    }
+
     private void positionObject(SpaceObject object) {
         double x = (Math.random() < 0.5 ? 1f : -1f) * (Math.random() * 20000. + 10000);
         double y = (Math.random() < 0.5 ? 1f : -1f) * (Math.random() * 20000. + 10000);
@@ -201,6 +227,10 @@ public class Main extends Application {
     private void setUpSpaceObjects() {
         for (int i = 0; i < 12; i++) {
             drawBubble();
+        }
+
+        for (int i = 0; i < 2; i++) {
+            drawPowerUp();
         }
     }
 
@@ -333,7 +363,7 @@ public class Main extends Application {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new StarDestroyer(); // TODO: Choose rocket
+        spacecraft = new TieInterceptor(); // TODO: Choose rocket
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
