@@ -14,7 +14,7 @@ public abstract class Projectile extends SpaceObject {
 
     public Projectile(Spacecraft spacecraft) {
         position = spacecraft.getPosition().duplicate();
-        speed = spacecraft.getSpeed().duplicate().scalarMultiply(getFactor());
+        speed = spacecraft.getSpeed().duplicate().scalarMultiply(getFactor() * 1500.0 / spacecraft.getSpeed().getIntensity());
         setTranslateX(position.getX());
         setTranslateY(position.getY());
         setTranslateZ(position.getZ());
