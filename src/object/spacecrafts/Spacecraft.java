@@ -24,6 +24,9 @@ public abstract class Spacecraft extends SpaceObject {
     protected int health;
     protected int numOfProjectiles;
 
+    protected boolean invincible = false;
+    protected double invincibleDuration = 0;
+
     protected int getMaxHealth() {
         return 9;
     }
@@ -132,7 +135,7 @@ public abstract class Spacecraft extends SpaceObject {
     }
 
     public void collide() {
-        health--;
+        if (!invincible) health--;
     }
 
     public int getHealth() {
@@ -152,5 +155,17 @@ public abstract class Spacecraft extends SpaceObject {
     public void increaseNumOfProjectiles() {
         numOfProjectiles += getProjectilesUpdate();
         if (numOfProjectiles > getMaxNumOfProjectiles()) numOfProjectiles = getMaxNumOfProjectiles();
+    }
+
+    public void applyInvincibility(double duration) {
+        invincibleDuration = duration;
+        invincible = true;
+    }
+
+    public void updateInvincibility(double passed) {
+        if (invincible) {
+            invincibleDuration -= passed;
+            if (invincibleDuration < 0) invincible = false;
+        }
     }
 }

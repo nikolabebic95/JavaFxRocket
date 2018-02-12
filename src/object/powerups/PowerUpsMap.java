@@ -10,6 +10,7 @@ public class PowerUpsMap {
     static {
         powerUps.add(new Heart());
         powerUps.add(new StormtrooperHelmet());
+        powerUps.add(new R2D2());
     }
 
     public static PowerUp getRandom() {

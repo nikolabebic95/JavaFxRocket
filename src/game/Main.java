@@ -17,9 +17,7 @@ import object.*;
 
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
-import object.powerups.Heart;
-import object.powerups.PowerUp;
-import object.powerups.PowerUpsMap;
+import object.powerups.*;
 import object.projectiles.*;
 import object.shootables.*;
 import object.spacecrafts.*;
@@ -78,6 +76,7 @@ public class Main extends Application {
             float passed = (now - previous) / 1e9f;
             updateProjectiles(passed);
             spacecraft.update(passed);
+            spacecraft.updateInvincibility(passed);
             refreshHeadUp();
             refreshAltitudeHeadUp();
             camera.update();
