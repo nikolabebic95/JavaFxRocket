@@ -7,10 +7,7 @@ import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
@@ -52,6 +49,8 @@ public class Main extends Application {
 
     private Circle dot;
     private Polygon arrow;
+
+    private Polygon speedArrow;
 
     private Line centralLine;
     private ArrayList<Line> leftLines = new ArrayList<>();
@@ -103,6 +102,13 @@ public class Main extends Application {
         } else {
             this.dot.setVisible(false);
         }
+
+        double speed = spacecraft.getSpeed().getIntensity();
+        final double maxSpeed = 5000.0;
+        double percentage = speed / maxSpeed;
+
+        double angle = percentage * 240 - 120;
+        speedArrow.getTransforms().setAll(new Rotate(angle, 0, 0));
     }
 
     private void refreshAltitudeHeadUp() {
@@ -290,6 +296,29 @@ public class Main extends Application {
         this.arrow.setTranslateX(300.0D - compassCircle.getRadius() - compassCircle.getRadius() / 6.0D);
         this.arrow.setFill(Color.WHITE);
         headUpDisplayRoot.getChildren().add(this.arrow);
+
+        Circle speedometer = new Circle(33);
+        speedometer.setFill(null);
+        speedometer.setStroke(Color.RED);
+        speedometer.setStrokeWidth(3);
+        speedometer.setTranslateX(speedometer.getRadius() + speedometer.getRadius() / 6);
+        speedometer.setTranslateY(speedometer.getRadius() + speedometer.getRadius() / 6);
+
+        double center = speedometer.getRadius() + speedometer.getRadius() / 6;
+
+        Arc arc = new Arc(0, 0, 33, 33, 210, 120);
+        arc.setFill(Color.RED);
+        arc.setType(ArcType.ROUND);
+        arc.setTranslateX(center);
+        arc.setTranslateY(center);
+
+        speedArrow = new Polygon(0, -33, -1.5, 7, 1.5, 7);
+        speedArrow.setTranslateY(center);
+        speedArrow.setTranslateX(center);
+        speedArrow.setFill(Color.WHITE);
+        speedArrow.getTransforms().setAll(new Rotate(-120, 0, 0));
+
+        headUpDisplayRoot.getChildren().addAll(speedometer, arc, speedArrow);
     }
 
     private void createAltitudeHeadUp() {
