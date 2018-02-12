@@ -39,7 +39,7 @@ public class TieInterceptor extends Spacecraft {
         protected double minSpeed = 200;
          */
 
-        maxSpeed = 4000;
+        maxSpeed = 4500;
         maxRollAngle = 60;
         maxPitchAngle = 45;
         rollSpeed = 100;
