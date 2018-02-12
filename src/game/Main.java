@@ -33,6 +33,7 @@ public class Main extends Application {
     private SubScene headUpDisplayScene;
     private SubScene altitudeHeadUp;
     private SubScene healthHeadUp;
+    private SubScene durationHeadUp;
 
     private Spacecraft spacecraft;
     private LaunchPad launchPad;
@@ -57,6 +58,9 @@ public class Main extends Application {
 
     private ArrayList<Heart> health = new ArrayList<>();
 
+    private Rectangle filled;
+    private double rectangleWidth;
+
     private UpdateTimer timer = new UpdateTimer();
 
     private DefaultCamera defaultCamera = new DefaultCamera();
@@ -77,6 +81,14 @@ public class Main extends Application {
             updateProjectiles(passed);
             spacecraft.update(passed);
             spacecraft.updateInvincibility(passed);
+
+            if (spacecraft.isInvincible()) {
+                durationHeadUp.setVisible(true);
+                refreshDurationHeadUp();
+            } else {
+                durationHeadUp.setVisible(false);
+            }
+
             refreshHeadUp();
             refreshAltitudeHeadUp();
             camera.update();
@@ -150,6 +162,12 @@ public class Main extends Application {
         }
     }
 
+    private void refreshDurationHeadUp() {
+        double left = spacecraft.getInvincibleDuration();
+        double ratio = left / 10;
+        filled.setWidth(ratio * rectangleWidth);
+    }
+
     private void checkForCollisions() {
         shootables.forEach(shootableObject -> {
             projectiles.forEach(projectile -> {
@@ -210,8 +228,6 @@ public class Main extends Application {
 
     private void drawBubble() {
         SpaceBubble bubble = new SpaceBubble(450);
-        //StormtrooperHelmet bubble = new StormtrooperHelmet();
-        //Heart bubble = new Heart();
         positionObject(bubble);
         shootables.add(bubble);
         mainSceneRoot.getChildren().add(bubble);
@@ -391,6 +407,37 @@ public class Main extends Application {
         }
     }
 
+    private void createDurationHeadUp() {
+        Group root = new Group();
+
+        double width = WINDOW_WIDTH - 2 * 300;
+        double height = 50;
+
+        durationHeadUp = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
+        durationHeadUp.setTranslateX(300);
+        durationHeadUp.setTranslateY(WINDOW_HEIGHT - height);
+
+        Rectangle rectangle = new Rectangle(width, height);
+        rectangle.setStroke(Color.RED);
+        rectangle.setStrokeWidth(3);
+        rectangle.setArcHeight(46.0D);
+        rectangle.setArcWidth(60.0D);
+
+        rectangleWidth = width - 6;
+        filled = new Rectangle(rectangleWidth, height - 6);
+        filled.setTranslateX(3);
+        filled.setTranslateY(3);
+        filled.setFill(Color.WHITE);
+        filled.setArcHeight(46.0D);
+        filled.setArcWidth(60.0D);
+        filled.setOpacity(0.2);
+
+        root.getChildren().add(rectangle);
+
+        root.getChildren().add(filled);
+        durationHeadUp.setVisible(false);
+    }
+
     private void createMainScene(int curr) {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
@@ -415,7 +462,8 @@ public class Main extends Application {
         createHeadUpDisplayScene();
         createAltitudeHeadUp();
         createHealthHeadUp();
-        root.getChildren().addAll(mainSubscene, headUpDisplayScene, altitudeHeadUp, healthHeadUp);
+        createDurationHeadUp();
+        root.getChildren().addAll(mainSubscene, headUpDisplayScene, altitudeHeadUp, healthHeadUp, durationHeadUp);
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, true);
         scene.setOnKeyPressed(this::onKeyPressed);

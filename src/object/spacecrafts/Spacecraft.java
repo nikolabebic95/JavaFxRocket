@@ -168,4 +168,12 @@ public abstract class Spacecraft extends SpaceObject {
             if (invincibleDuration < 0) invincible = false;
         }
     }
+
+    public boolean isInvincible() {
+        return invincible;
+    }
+
+    public double getInvincibleDuration() {
+        return invincibleDuration;
+    }
 }
