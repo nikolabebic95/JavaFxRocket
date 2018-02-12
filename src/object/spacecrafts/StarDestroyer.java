@@ -64,4 +64,9 @@ public class StarDestroyer extends Spacecraft {
     protected int getMaxNumOfProjectiles() {
         return 20;
     }
+
+    @Override
+    protected int getProjectilesUpdate() {
+        return 5;
+    }
 }

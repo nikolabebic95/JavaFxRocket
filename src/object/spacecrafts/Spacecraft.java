@@ -31,6 +31,10 @@ public abstract class Spacecraft extends SpaceObject {
         return 100;
     }
 
+    protected int getProjectilesUpdate() {
+        return 10;
+    }
+
     private Vector speed = new Vector(0, 0, 0);
     private Vector angle = new Vector(0, 0, 0);
 
@@ -143,5 +147,10 @@ public abstract class Spacecraft extends SpaceObject {
         if (health != getMaxHealth()) {
             health++;
         }
+    }
+
+    public void increaseNumOfProjectiles() {
+        numOfProjectiles += getProjectilesUpdate();
+        if (numOfProjectiles > getMaxNumOfProjectiles()) numOfProjectiles = getMaxNumOfProjectiles();
     }
 }

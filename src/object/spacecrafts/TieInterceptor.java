@@ -65,4 +65,9 @@ public class TieInterceptor extends Spacecraft {
     protected int getMaxNumOfProjectiles() {
         return 200;
     }
+
+    @Override
+    protected int getProjectilesUpdate() {
+        return 50;
+    }
 }

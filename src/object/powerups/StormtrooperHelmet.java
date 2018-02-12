@@ -1,4 +1,4 @@
-package object;
+package object.powerups;
 
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 import geometry.Vector;
@@ -9,11 +9,13 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import object.SpaceObject;
+import object.spacecrafts.Spacecraft;
 import util.RandomUtility;
 
 import java.util.Random;
 
-public class StormtrooperHelmet extends SpaceObject {
+public class StormtrooperHelmet extends PowerUp {
     public StormtrooperHelmet() {
         position = new Vector(0, 0, 0);
 
@@ -49,5 +51,15 @@ public class StormtrooperHelmet extends SpaceObject {
         timeline.play();
 
         getChildren().add(group);
+    }
+
+    @Override
+    public PowerUp copy() {
+        return new StormtrooperHelmet();
+    }
+
+    @Override
+    public void apply(Spacecraft spacecraft) {
+        spacecraft.increaseNumOfProjectiles();
     }
 }

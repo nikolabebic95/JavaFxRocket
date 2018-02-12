@@ -62,4 +62,9 @@ public class MilleniumFalcon extends Spacecraft {
     protected int getMaxNumOfProjectiles() {
         return 50;
     }
+
+    @Override
+    protected int getProjectilesUpdate() {
+        return 10;
+    }
 }

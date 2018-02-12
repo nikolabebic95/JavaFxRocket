@@ -9,6 +9,7 @@ public class PowerUpsMap {
 
     static {
         powerUps.add(new Heart());
+        powerUps.add(new StormtrooperHelmet());
     }
 
     public static PowerUp getRandom() {
