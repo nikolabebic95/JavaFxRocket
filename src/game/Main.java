@@ -26,8 +26,8 @@ import object.spacecrafts.*;
 import state.*;
 
 public class Main extends Application {
-    private static final int WINDOW_HEIGHT = 700;
-    private static final int WINDOW_WIDTH = 900;
+    public static final int WINDOW_HEIGHT = 700;
+    public static final int WINDOW_WIDTH = 900;
 
     private Group mainSceneRoot;
 
@@ -392,11 +392,11 @@ public class Main extends Application {
         }
     }
 
-    private void createMainScene() {
+    private void createMainScene(int curr) {
         mainSceneRoot = new Group();
         mainSubscene = new SubScene(mainSceneRoot, WINDOW_WIDTH, WINDOW_HEIGHT, true, SceneAntialiasing.BALANCED);
         mainSubscene.setFill(Color.BLACK);
-        spacecraft = new TieInterceptor(); // TODO: Choose rocket
+        this.spacecraft = curr == 0 ? new StarDestroyer() : curr == 1 ? new TieInterceptor() : new MilleniumFalcon();
         launchPad = new LaunchPad();
         mainSceneRoot.getChildren().addAll(launchPad, spacecraft);
         setUpSpaceObjects();
@@ -410,10 +410,9 @@ public class Main extends Application {
         orbitingCamera.setObject(spacecraft);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public void startScene(Stage primaryStage, int curr) {
         Group root = new Group();
-        createMainScene();
+        createMainScene(curr);
         createHeadUpDisplayScene();
         createAltitudeHeadUp();
         createHealthHeadUp();
@@ -424,12 +423,15 @@ public class Main extends Application {
         scene.setOnKeyReleased(this::onKeyReleased);
         scene.setOnMousePressed(this::onMousePressed);
         scene.setOnMouseDragged(this::onMouseDragged);
-        primaryStage.setTitle("Rocket");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.sizeToScene();
         primaryStage.show();
         timer.start();
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        ChooseShip chooseShip = new ChooseShip();
+        chooseShip.start(this, primaryStage);
     }
 
     private void onKeyPressed(KeyEvent e) {
