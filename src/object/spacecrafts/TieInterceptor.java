@@ -47,12 +47,22 @@ public class TieInterceptor extends Spacecraft {
     }
 
     @Override
-    public Projectile shoot() {
+    public Projectile createProjectile() {
         return new TieInterceptorProjectile(this);
     }
 
     @Override
     public void update(double passed) {
         this.state.update(passed, this.pitchDirection, this.rollDirection, this.accelerationDirection);
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 3;
+    }
+
+    @Override
+    protected int getMaxNumOfProjectiles() {
+        return 200;
     }
 }

@@ -91,7 +91,7 @@ public class Main extends Application {
                 "y - " + String.format("%.0f", this.spacecraft.getPosition().getY()) + "\n" +
                 "z - " + String.format("%.0f", this.spacecraft.getPosition().getZ()) + "\n";
         this.coordinates.setText(stringBuilder);
-        this.bubblesHitText.setText(this.bubblesHit + "");
+        this.bubblesHitText.setText(this.bubblesHit + "\n" + spacecraft.getNumOfProjectiles());
         this.arrow.setRotate(-this.spacecraft.getHorizontalAngle());
         double offsetX = this.spacecraft.getPosition().getX() / 3000.0D;
         double offsetY = this.spacecraft.getPosition().getY() / 3000.0D;
@@ -144,6 +144,10 @@ public class Main extends Application {
 
         for (; i < health.size(); i++) {
             health.get(i).setVisible(false);
+        }
+
+        if (spacecraft.getHealth() == 0) {
+            Platform.exit();
         }
     }
 
@@ -262,10 +266,10 @@ public class Main extends Application {
         this.coordinates.setTranslateX(10.0D);
         this.coordinates.setTranslateY(187.0D);
         this.bubblesHitText = new Text();
-        this.bubblesHitText.setText(this.bubblesHit + "");
+        this.bubblesHitText.setText(this.bubblesHit + "\n" + spacecraft.getNumOfProjectiles());
         this.bubblesHitText.setFill(Color.RED);
         this.bubblesHitText.setFont(font);
-        this.bubblesHitText.setTranslateX(300.0D - this.bubblesHitText.getLayoutX() - 20.0D);
+        this.bubblesHitText.setTranslateX(300.0D - this.bubblesHitText.getLayoutX() - 50);
         this.bubblesHitText.setTranslateY(187.0D);
         headUpDisplayRoot.getChildren().addAll(this.coordinates, this.bubblesHitText);
 
@@ -507,8 +511,10 @@ public class Main extends Application {
             case B:
                 if (spacecraft.getState() instanceof FlyState) {
                     Projectile projectile = spacecraft.shoot();
-                    mainSceneRoot.getChildren().add(projectile);
-                    projectiles.add(projectile);
+                    if (projectile != null) {
+                        mainSceneRoot.getChildren().add(projectile);
+                        projectiles.add(projectile);
+                    }
                 }
                 break;
             case Q: case ESCAPE:

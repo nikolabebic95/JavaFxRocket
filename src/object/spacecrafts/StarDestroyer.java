@@ -51,7 +51,17 @@ public class StarDestroyer extends Spacecraft {
     }
 
     @Override
-    public Projectile shoot() {
+    public Projectile createProjectile() {
         return new StarDestroyerProjectile(this);
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 9;
+    }
+
+    @Override
+    protected int getMaxNumOfProjectiles() {
+        return 20;
     }
 }

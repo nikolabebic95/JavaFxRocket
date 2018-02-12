@@ -49,7 +49,17 @@ public class MilleniumFalcon extends Spacecraft {
     }
 
     @Override
-    public Projectile shoot() {
+    public Projectile createProjectile() {
         return new MilleniumFalconProjectile(this);
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 6;
+    }
+
+    @Override
+    protected int getMaxNumOfProjectiles() {
+        return 50;
     }
 }

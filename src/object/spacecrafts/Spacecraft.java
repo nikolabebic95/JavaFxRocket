@@ -22,9 +22,13 @@ public abstract class Spacecraft extends SpaceObject {
     protected State state;
 
     protected int health;
+    protected int numOfProjectiles;
 
     protected int getMaxHealth() {
         return 9;
+    }
+    protected int getMaxNumOfProjectiles() {
+        return 100;
     }
 
     private Vector speed = new Vector(0, 0, 0);
@@ -32,6 +36,7 @@ public abstract class Spacecraft extends SpaceObject {
 
     public Spacecraft() {
         health = getMaxHealth();
+        numOfProjectiles = getMaxNumOfProjectiles();
     }
 
     public abstract void update(double passed);
@@ -109,7 +114,17 @@ public abstract class Spacecraft extends SpaceObject {
     }
 
     public Projectile shoot() {
+        if (numOfProjectiles == 0) return null;
+        numOfProjectiles--;
+        return createProjectile();
+    }
+
+    protected Projectile createProjectile() {
         return new BasicProjectile(this);
+    }
+
+    public int getNumOfProjectiles() {
+        return numOfProjectiles;
     }
 
     public void collide() {
